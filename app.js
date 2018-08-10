@@ -1,10 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
+const mongoose = require('./config/db');
+
 const app = express();
 const port = 3000;
-
-const mongoose = require('mongoose');
 //Middlewares
 app.use(bodyParser.json());
 app.use(morgan('dev'));
