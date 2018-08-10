@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const app = express();
 const port = 3000;
 
+const mongoose = require('mongoose');
 //Middlewares
 app.use(bodyParser.json());
 app.use(morgan('dev'));
