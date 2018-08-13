@@ -32,4 +32,4 @@ const Ticket = mongoose.model('Tickets',ticketSchema);
 
 module.exports = {
     Ticket
-}
+}   
