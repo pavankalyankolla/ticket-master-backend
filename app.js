@@ -54,6 +54,20 @@ app.get('/tickets/:id',(req,res) => {
     })
 }); 
 
+app.put('/tickets/:id',(req,res) => {
+    let id = req.params.id;
+    let body = req.body;
+    Ticket.findByIdAndUpdate(id,{ $set: body },{ new : true})
+    .then((ticket) => {
+        res.send(ticket)
+    })
+    .catch((err) => {
+        res.send(err);
+    })
+});
+
+
+
 
 app.listen(port,() => {
     console.log('listening port',port);
