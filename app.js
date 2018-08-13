@@ -1,5 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+
+const { ObjectId } = require('mongodb');
+
 const morgan = require('morgan');
 const mongoose = require('./config/db');
 
@@ -47,8 +50,22 @@ app.post('/tickets',(req,res) => {
 
 app.get('/tickets/:id',(req,res) => {
     let id =req.params.id;
+
+    if(!ObjectId.isValid(id)){
+        res.send({
+            notice : 'invalid object id'
+        });
+    }
+
     Ticket.findById(id).then((ticket) => {
+       if(ticket){
         res.send(ticket);
+       } else {
+           res.send({
+               notice : 'Ticket not found'
+           })
+       }
+       
     }) .catch((err) => {
         res.send(err);
     })
@@ -57,6 +74,13 @@ app.get('/tickets/:id',(req,res) => {
 app.put('/tickets/:id',(req,res) => {
     let id = req.params.id;
     let body = req.body;
+
+    if(!ObjectId.isValid(id)){
+        res.send({
+            notice : 'invalid object id'
+        });
+    }
+
     Ticket.findByIdAndUpdate(id,{ $set: body },{ new : true})
     .then((ticket) => {
         if(ticket) {
@@ -78,6 +102,13 @@ app.put('/tickets/:id',(req,res) => {
 
 app.delete('/tickets/:id',(req,res) => {
     let id = req.params.id;
+
+    if(!ObjectId.isValid(id)){
+        res.send({
+            notice : 'invalid object id'
+        });
+    }
+    
     Ticket.findByIdAndRemove(id) 
     .then((ticket) => {
       if(ticket){
