@@ -14,11 +14,16 @@ const port = 3000;
 app.use(bodyParser.json());
 app.use(morgan('dev'));
 
-app.use('/tickets/:id',(req,res,next) => {
-    if(!ObjectId.isValid(req.params.id)){
-        res.send('Object id is invalid');
+app.use((req,res,next) => {
+    if(req.params.id){
+        if(!ObjectId.isValid(req.params.id)){
+            res.send({
+                notice : 'Object id is invalid'
+            })
+        }
+        next();
     }
-    next()
+   
 })
 
 //custom logger middleware
