@@ -14,6 +14,13 @@ const port = 3000;
 app.use(bodyParser.json());
 app.use(morgan('dev'));
 
+app.use('/tickets/:id',(req,res,next) => {
+    if(!ObjectId.isValid(req.params.id)){
+        res.send('Object id is invalid');
+    }
+    next()
+})
+
 //custom logger middleware
 // app.use((req,res,next) => {
 //     console.log(`${req.method} - ${req.url} - ${req.ip} - ${new Date()}`);
@@ -108,7 +115,7 @@ app.delete('/tickets/:id',(req,res) => {
             notice : 'invalid object id'
         });
     }
-    
+
     Ticket.findByIdAndRemove(id) 
     .then((ticket) => {
       if(ticket){
