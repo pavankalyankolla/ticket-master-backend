@@ -14,17 +14,25 @@ const port = 3000;
 app.use(bodyParser.json());
 app.use(morgan('dev'));
 
-app.use((req,res,next) => {
-    if(req.params.id){
-        if(!ObjectId.isValid(req.params.id)){
+app.param('id',(req,res,next) => {
+ let id = req.params.id;
+    if(!ObjectId.isValid(id)){
             res.send({
                 notice : 'Object id is invalid'
             })
         }
         next();
-    }
-   
 })
+
+app.use('/tickets/id',(req,res,next) => {
+    let id = req.params.id;
+       if(!ObjectId.isValid(id)){
+               res.send({
+                   notice : 'Object id is invalid'
+               })
+           }
+           next();
+   })
 
 //custom logger middleware
 // app.use((req,res,next) => {
@@ -61,13 +69,7 @@ app.post('/tickets',(req,res) => {
 });
 
 app.get('/tickets/:id',(req,res) => {
-    let id =req.params.id;
-
-    if(!ObjectId.isValid(id)){
-        res.send({
-            notice : 'invalid object id'
-        });
-    }
+    let id = req.params.id;
 
     Ticket.findById(id).then((ticket) => {
        if(ticket){
@@ -85,13 +87,6 @@ app.get('/tickets/:id',(req,res) => {
 
 app.put('/tickets/:id',(req,res) => {
     let id = req.params.id;
-    let body = req.body;
-
-    if(!ObjectId.isValid(id)){
-        res.send({
-            notice : 'invalid object id'
-        });
-    }
 
     Ticket.findByIdAndUpdate(id,{ $set: body },{ new : true})
     .then((ticket) => {
@@ -114,12 +109,6 @@ app.put('/tickets/:id',(req,res) => {
 
 app.delete('/tickets/:id',(req,res) => {
     let id = req.params.id;
-
-    if(!ObjectId.isValid(id)){
-        res.send({
-            notice : 'invalid object id'
-        });
-    }
 
     Ticket.findByIdAndRemove(id) 
     .then((ticket) => {
