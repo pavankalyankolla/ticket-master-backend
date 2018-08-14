@@ -24,15 +24,15 @@ app.param('id',(req,res,next) => {
         next();
 })
 
-app.use('/tickets/id',(req,res,next) => {
-    let id = req.params.id;
-       if(!ObjectId.isValid(id)){
-               res.send({
-                   notice : 'Object id is invalid'
-               })
-           }
-           next();
-   })
+// app.use('/tickets/id',(req,res,next) => {
+//     let id = req.params.id;
+//        if(!ObjectId.isValid(id)){
+//                res.send({
+//                    notice : 'Object id is invalid'
+//                })
+//            }
+//            next();
+//    })
 
 //custom logger middleware
 // app.use((req,res,next) => {
