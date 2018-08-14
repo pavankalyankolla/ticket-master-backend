@@ -92,6 +92,7 @@ app.get('/tickets/:id',(req,res) => {
 app.put('/tickets/:id',(req,res) => {
     let id = req.params.id;
 
+    let body = _.pick(req.body,['name','department','message','priority','status']);
     Ticket.findByIdAndUpdate(id,{ $set: body },{ new : true})
     .then((ticket) => {
         if(ticket) {
