@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-
+const _ = require('lodash');
 const { ObjectId } = require('mongodb');
 
 const morgan = require('morgan');
@@ -59,7 +59,11 @@ app.get('/tickets',(req,res) => {
 });
 
 app.post('/tickets',(req,res) => {
-    let body = req.body;
+    // let body = req.body;
+    // strong parameter check
+     
+    let body = _.pick(req.body,['name','department','message','priority']);
+
     let ticket = new Ticket(body);
     ticket.save().then((ticket) => {
         res.send(ticket);
