@@ -44,5 +44,20 @@ Ticket.find({department : 'Technical'}).limit(2).then((tickets) => {
 
 //useful for pagination
 Ticket.find().skip(3).limit(2).then((tickets) => {
-    console.log(tickets);
+    // console.log(tickets);
 })
+
+//sort based on desc order
+Ticket.find().sort({name:-1}) .then((tickets) => {
+    // console.log(tickets);
+})
+
+
+//sort based on asc order
+Ticket.find().sort({name:1}) .then((tickets) => {
+    // console.log(tickets);
+})
+
+Ticket.find().sort({createdAt : -1}) .then((tickets) => {
+    console.log(tickets);
+}) 
