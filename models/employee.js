@@ -40,7 +40,7 @@ const employeeSchema = new Schema({
         numType : {
             type : String
         },
-        mpbileNumber: {
+        mobileNumber: {
             type : String
         }
     }] 
