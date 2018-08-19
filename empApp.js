@@ -18,15 +18,15 @@ const port = 3000;
 app.use(bodyParser.json());
 app.use(morgan('dev'));
 //app.param is also middleware
-app.param('id',(req,res,next) => {
-    if(!ObjectId.isValid(req.params.id)) {
-            res.send({
-                notice:'Invalid id'
-            });
-        }
-    next();
+// app.param('id',(req,res,next) => {
+//     if(!ObjectId.isValid(req.params.id)) {
+//             res.send({
+//                 notice:'Invalid id'
+//             });
+//         }
+//     next();
     
-});
+// });
 
 //route handlers
 
@@ -46,6 +46,14 @@ app.post('/employees',(req,res) => {
     employee.save().then(employee => res.send(employee)).catch(err => res.send(err));
 });
 
+app.get('/employees/list',(req,res) => {
+    let params = req.query;
+    let orderBy = params.order == "ASC" ? 1 : -1 ;
+    Employee.find().sort({params:orderBy}).then((employees) => {
+        res.send(employees);
+      })
+  });
+  
 app.get('/employees/:id',(req,res) => {
     Employee.findById(req.params.id).then((employee) => {
         if(employee){
@@ -57,6 +65,7 @@ app.get('/employees/:id',(req,res) => {
         }
     }).catch(err => res.send(err));
 });
+
 
 app.put('/employees/:id',(req,res) => {
     Employee.findByIdAndUpdate(req.params.id,{$set: req.body},{new: true}).then((employee) => {
@@ -87,6 +96,7 @@ app.delete('/employees/:id',(req,res) => {
         }
     }).catch(err => res.send(err));
 });
+
 
 
 app.listen(port,() => {
