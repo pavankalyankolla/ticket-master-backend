@@ -9,7 +9,7 @@ Ticket.find().then((tickets) => {
 
 //find all the tickets based on priority
 Ticket.find({priority : 'High'}) .then((tickets) => {
-    // console.log(tickets);
+    // console.log(tickets); 
 })
 
 //find all the tickets based on department
