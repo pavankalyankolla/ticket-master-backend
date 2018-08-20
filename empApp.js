@@ -67,6 +67,47 @@ app.get('/employees/:id',(req,res) => {
 });
 
 
+// employees/id/mobileNumbers
+
+app.get('/employees/:id/mobile_numbers',(req,res) => {
+    let id= req.params.id;
+    Employee.findById(id).select(['id','name','mobileNumbers']) .then((employee) => {
+        if(employee) {
+            res.send(employee);
+        }
+        res.send({
+            notice : 'Employee not found'
+        })
+    }) .catch((err) => {
+        res.send(err);
+    });
+});
+
+// adding mobile number to employee
+app.post('/employees/:id/mobile_numbers',(req,res) => {
+    let id = req.params.id;
+    let body = req.body;
+    Employee.findById(id).then((employee) => {
+        if(employee){
+            employee.mobileNumbers.push(body);
+            return employee.save()
+        }
+        res.send({
+            notice : 'Employee not found'
+        });
+    }) .then((employee) => {
+        let newMobile = employee.mobileNumbers[employee.mobileNumbers.length - 1];
+        res.send({
+            newMobile,
+            notice : 'Successfully added'
+        });
+    }) .catch((err) => {
+        res.send(err);
+    })
+});
+
+
+
 app.put('/employees/:id',(req,res) => {
     Employee.findByIdAndUpdate(req.params.id,{$set: req.body},{new: true}).then((employee) => {
         if(employee){
