@@ -106,6 +106,52 @@ app.post('/employees/:id/mobile_numbers',(req,res) => {
     })
 });
 
+//updating
+app.put('/employees/:id/mobile_numbers/:mobile_id',(req,res) => {
+    let id = req.params.id;
+    let mobileId = req.params.mobile_id;
+    let body = _.pick(req.body,['numType','mobileNumber']);
+    Employee.findById(id).then((employee) => {
+        if(employee) {
+            let mobileDetail = employee.mobileNumbers.id(mobileId);
+            mobileDetail.numType = body.numType ? body.numType : mobileDetail.numType;
+            mobileDetail.mobileNumber = body.mobileNumber ? body.mobileNumber : mobileDetail.mobileNumber;
+            return employee.save();
+        }
+        res.send({
+            notice : 'Employee not found'
+        })
+    })  .then((employee) => {
+        res.send({
+            mobileNumber : employee.mobileNumbers.id(mobileId),
+            notice : 'Suceesfully updated'
+        })
+    }) .catch((err) => {
+        res.send(err);
+    })
+})
+
+// deleting
+app.delete('/employees/:id/mobile_numbers/:mobile_id',(req,res) => {
+    let id = req.params.id;
+    let mobileId = req.params.mobile_id;
+    Employee.findById(id).then((employee) => {
+        if(employee) {
+            employee.mobileNumbers.remove(mobileId);
+            return employee.save()
+        }
+        res.send({
+            notice : 'Employee not found'
+        });
+    }) .then((employee) => {
+        res.send({
+            notice : 'successfully removed'
+        });
+    }) .catch((err) => {
+        res.send(err);
+    })
+})
+
 
 
 app.put('/employees/:id',(req,res) => {
