@@ -46,6 +46,23 @@ const employeeSchema = new Schema({
     }] 
 });
 
+//static methods
+// employeeSchema.statics.findByDepartment = function(dept) {
+
+// }
+
+
+//instance methods
+employeeSchema.methods.shortInfo = function() {
+    return {
+        _id : this.id,
+        name : this.name,
+        email : this.email,
+        numberCount : this.mobileNumbers.length 
+    };
+};
+
+
 const Employee = mongoose.model('employee',employeeSchema);
 
 module.exports = {

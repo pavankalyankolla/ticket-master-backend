@@ -14,6 +14,16 @@ router.get('/',(req,res) => {
     Employee.find().then(employee => res.send(employee)).catch(err => res.send(err));
 });
 
+
+//instance methods
+router.get('/:id',(req,res) => {
+    Employee.findById(req.params.id) .then((employee) => {
+        res.send(employee.shortInfo());
+    }) .catch((err) => {
+        res.send(err);
+    });
+});
+
 router.post('/',(req,res) => {
     let body = _.pick(req.body,['name','email','department','salary','ageWhileJoining','address','hobbies','luckyNumbers','mobileNumbers']);
     let employee = new Employee(req.body);
