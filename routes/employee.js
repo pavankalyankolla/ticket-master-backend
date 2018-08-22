@@ -24,6 +24,21 @@ router.get('/:id',(req,res) => {
     });
 });
 
+// to perform for array of objects
+router.get('/show/short_info' ,(req,res) => {
+    Employee.find().then((employees) => {
+        // let result = [];
+        // for (let emp of employees) {
+        //     result.push(emp.shortInfo())
+        // }
+        // res.send(result);
+        let result = employees.map(emp => emp.shortInfo());
+        res.send(result);
+    }) .catch((err) => {
+        res.send(err);
+    });
+});
+
 router.post('/',(req,res) => {
     let body = _.pick(req.body,['name','email','department','salary','ageWhileJoining','address','hobbies','luckyNumbers','mobileNumbers']);
     let employee = new Employee(req.body);
