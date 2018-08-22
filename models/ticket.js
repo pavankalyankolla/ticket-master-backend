@@ -38,6 +38,12 @@ ticketSchema.statics.completedTickets = function(){
     return this.find({status : 'completed'})
 }
 
+ticketSchema.statics.findByPriority = function(priority){
+    return this.find({priority : priority})
+}
+
+
+
 const Ticket = mongoose.model('Tickets',ticketSchema);
 
 module.exports = {
