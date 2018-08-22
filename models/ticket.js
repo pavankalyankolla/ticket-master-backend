@@ -28,6 +28,16 @@ const ticketSchema = mongoose.Schema({
 
 });
 
+//don't defined static or instance methods an arrow functions
+
+ticketSchema.statics.openTickets = function(){
+    return this.find({status : 'open'});
+}
+
+ticketSchema.statics.completedTickets = function(){
+    return this.find({status : 'completed'})
+}
+
 const Ticket = mongoose.model('Tickets',ticketSchema);
 
 module.exports = {
