@@ -105,6 +105,16 @@ router.post('/:id/mobile_numbers',(req,res) => {
     })
 });
 
+//update based on id
+router.put('/:id',(req,res) => {
+    let id = req.params.id;
+    let body = req.body;
+    Employee.findByIdAndUpdate(id,{ $set : body}, {new : true, runValidators : true}) .then((employee) => {
+        res.send(employee);
+    }) .catch((err) => {
+        res.send(err);
+    })
+});
 //updating
 router.put('/:id/mobile_numbers/:mobile_id',(req,res) => {
     let id = req.params.id;

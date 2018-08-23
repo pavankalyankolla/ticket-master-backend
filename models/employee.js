@@ -33,7 +33,16 @@ const employeeSchema = new Schema({
         required : true
     },
     salary : {
-        type : Number
+        type : Number,
+        required:true,
+        validate : {
+            validator : function(userInput){
+                return userInput>10000;
+            },
+            message : function (props) {
+                return `${props.path} is not valid`
+            }
+        }
     },
     ageWhileJoining : {
         type : Number,
