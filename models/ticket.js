@@ -5,6 +5,9 @@ const ticketSchema = mongoose.Schema({
         type : String,
         required : true
     },
+    code : {
+        type : String
+    },
     department: {
         type :String,
         required :true
@@ -41,6 +44,14 @@ ticketSchema.statics.completedTickets = function(){
 ticketSchema.statics.findByPriority = function(priority){
     return this.find({priority : priority})
 }
+
+//creating ticket code
+ticketSchema.pre('save',function(next){
+    if(!this.code){
+        this.code = 'DCT - ' + Math.ceil(Math.random() * 1000);
+    }
+    next();
+})
 
 
 
