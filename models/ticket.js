@@ -48,7 +48,8 @@ ticketSchema.statics.findByPriority = function(priority){
 //creating ticket code
 ticketSchema.pre('save',function(next){
     if(!this.code){
-        this.code = 'DCT - ' + Math.ceil(Math.random() * 1000);
+        // this.code = 'DCT - ' + Math.ceil(Math.random() * 1000);
+        this.code = 'DCT - '+ this._id.toString().slice(12);
     }
     next();
 })
