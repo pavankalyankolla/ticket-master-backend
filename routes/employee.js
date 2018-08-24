@@ -1,5 +1,6 @@
 const express = require('express');
 const { Employee } = require('../models/employee');
+const { Ticket } = require('../models/ticket');
 const router = express.Router();
 const _ = require('lodash');
 
@@ -19,6 +20,22 @@ router.get('/',(req,res) => {
 router.get('/:id',(req,res) => {
     Employee.findById(req.params.id) .then((employee) => {
         res.send(employee.shortInfo());
+    }) .catch((err) => {
+        res.send(err);
+    });
+});
+
+router.get('/:id/tickets',(req,res) => {
+    let employeeId = req.params.id;
+    Ticket.find({employee : employeeId}) .then((tickets) => {
+       if(tickets.length === 0) {
+           res.send({
+               notice : 'no tickets found for this employee'
+           })
+       } else {
+        res.send(tickets);
+       }
+       
     }) .catch((err) => {
         res.send(err);
     });

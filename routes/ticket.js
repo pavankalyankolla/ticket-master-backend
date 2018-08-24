@@ -44,7 +44,7 @@ router.post('/',(req,res) => {
     // let body = req.body;
     // strong parameter check
      
-    let body = _.pick(req.body,['name','department','message','priority']);
+    let body = _.pick(req.body,['name','department','message','priority','employee']);
 
     let ticket = new Ticket(body);
     ticket.save().then((ticket) => {
@@ -74,7 +74,7 @@ router.get('/:id',(req,res) => {
 router.put('/:id',(req,res) => {
     let id = req.params.id;
 
-    let body = _.pick(req.body,['name','department','message','priority','status']);
+    let body = _.pick(req.body,['name','department','message','priority','status','employee']);
     Ticket.findByIdAndUpdate(id,{ $set: body },{ new : true})
     .then((ticket) => {
         if(ticket) {
