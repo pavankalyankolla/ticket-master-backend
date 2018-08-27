@@ -30,7 +30,8 @@ const ticketSchema = new Schema({
         default : Date.now
     },
     employee : {
-        type : Schema.Types.ObjectId
+        type : Schema.Types.ObjectId,
+        ref : 'Employee'
     }
 
 });

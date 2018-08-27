@@ -89,7 +89,7 @@ employeeSchema.methods.shortInfo = function() {
 };
 
 
-const Employee = mongoose.model('employee',employeeSchema);
+const Employee = mongoose.model('Employee',employeeSchema);
 
 module.exports = {
     Employee

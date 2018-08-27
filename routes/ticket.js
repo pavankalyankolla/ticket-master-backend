@@ -57,7 +57,7 @@ router.post('/',(req,res) => {
 router.get('/:id',(req,res) => {
     let id = req.params.id;
 
-    Ticket.findById(id).then((ticket) => {
+    Ticket.findById(id).populate('employee').then((ticket) => {
        if(ticket){
         res.send(ticket);
        } else {
