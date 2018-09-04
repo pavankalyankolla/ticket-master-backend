@@ -1,13 +1,15 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const _ = require('lodash');
+const jwt = require('jsonwebtoken');
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
     username : {
         type : String,
-        minlength : 6,
         trim : true,
-        required : true
+        required : true,
+        unique : true
     },
     email : {
         type : String,
@@ -31,7 +33,7 @@ const UserSchema = new Schema({
         required : true,
         validate : {
             validator : function(value) {
-                    return validator.isNumeric(value) && validator.isLength(10);
+                    return validator.isNumeric(value) && validator.isLength(value,{min : 10, max : 10});
                 },
                 message : 'Should be 10 digits'
         }
@@ -47,6 +49,23 @@ const UserSchema = new Schema({
         }
     }]
 })
+UserSchema.methods.toJSON = function(){
+    return _.pick(this,['_id','username','mobile','email']); //used for all requests
+}
+
+UserSchema.methods.generateToken = function(){
+    let tokenData = {
+        _id : this._id
+    };
+    let generatedTokenInfo = {
+        access : 'auth',
+        token : jwt.sign(tokenData,'supersecret')
+    }
+    this.tokens.push(generatedTokenInfo);
+    return this.save().then((user) => {
+        return generatedTokenInfo.token;
+    });
+}
 
 const User = mongoose.model('User',UserSchema);
 

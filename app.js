@@ -7,10 +7,12 @@ const morgan = require('morgan');
 const mongoose = require('./config/db');
 
 const { Ticket } = require('./models/ticket');
+const { User } = require('./models/user');
 
 const { ticketRouter } = require('./routes/ticket');
 const { employeeRouter } = require('./routes/employee');
- 
+const { usersRouter } = require('./routes/user');
+  
 const app = express();
 const port = 3000;
 //Middlewares
@@ -19,6 +21,7 @@ app.use(morgan('dev'));
 
 app.use('/tickets',ticketRouter);
 app.use('/employees',employeeRouter);
+app.use('/users',usersRouter);
 
 app.param('id',(req,res,next) => {
  let id = req.params.id;
