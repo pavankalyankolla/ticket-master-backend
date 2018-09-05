@@ -1,6 +1,7 @@
 const express = require('express');
 const _ = require('lodash');
 const { User } = require('../models/user');
+const { authenticateUser } = require('../middleware/authentication');
 const router = express.Router();
 
 
@@ -24,6 +25,14 @@ router.post('/',(req,res) => {
         res.send(400).send(err);
     })
 });
+
+
+//user profile
+ //between functions if you want to pass along data,you can attach it to the req object
+router.get('/profile',authenticateUser,(req,res) => {
+    res.send(req.locals.user);
+})
+
 
 module.exports = {
     usersRouter : router

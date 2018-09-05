@@ -1,5 +1,6 @@
 const express = require('express');
 const { Ticket } = require('../models/ticket');
+const { authenticateUser } = require('../middleware/authentication');
 const router = express.Router();
 const _ = require('lodash');
 
@@ -10,7 +11,7 @@ const _ = require('lodash');
 //     });
 // });
 
-router.get('/',(req,res) => {
+router.get('/',authenticateUser,(req,res) => {
     Ticket.find()
     .then((tickets) => {
         res.send(tickets);
@@ -20,19 +21,19 @@ router.get('/',(req,res) => {
     }) 
 });
 
-router.get('/status/open',(req,res) => {
+router.get('/status/open',authenticateUser,(req,res) => {
     Ticket.openTickets() .then((tickets) => {
         res.send(tickets);
     });
 });
 
-router.get('/status/completed',(req,res) => {
+router.get('/status/completed',authenticateUser,(req,res) => {
     Ticket.completedTickets() .then((tickets) => {
         res.send(tickets);
     });
 });
 
-router.get('/priority/:value' ,(req,res) => {
+router.get('/priority/:value',authenticateUser,(req,res) => {
     let value = req.params.value;
     Ticket.findByPriority(value).then((tickets) => {
         res.send(tickets);
@@ -40,7 +41,7 @@ router.get('/priority/:value' ,(req,res) => {
 });
 
 
-router.post('/',(req,res) => {
+router.post('/',authenticateUser,(req,res) => {
     // let body = req.body;
     // strong parameter check
      
@@ -54,7 +55,7 @@ router.post('/',(req,res) => {
     })
 });
 
-router.get('/:id',(req,res) => {
+router.get('/:id',authenticateUser,(req,res) => {
     let id = req.params.id;
 
     Ticket.findById(id).populate('employee').then((ticket) => {
@@ -71,7 +72,7 @@ router.get('/:id',(req,res) => {
     })
 }); 
 
-router.put('/:id',(req,res) => {
+router.put('/:id',authenticateUser,(req,res) => {
     let id = req.params.id;
 
     let body = _.pick(req.body,['name','department','message','priority','status','employee']);
@@ -94,7 +95,7 @@ router.put('/:id',(req,res) => {
     })
 });
 
-router.delete('/:id',(req,res) => {
+router.delete('/:id',authenticateUser,(req,res) => {
     let id = req.params.id;
 
     Ticket.findByIdAndRemove(id) 
