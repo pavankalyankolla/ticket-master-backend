@@ -22,7 +22,7 @@ router.post('/',(req,res) => {
     }) .then((token) => {
         res.header('x-auth',token).send(user);
     }) .catch((err) => {
-        res.send(400).send(err);
+        res.status(400).send(err);
     })
 });
 
