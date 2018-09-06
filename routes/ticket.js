@@ -46,8 +46,8 @@ router.post('/',authenticateUser,(req,res) => {
     // strong parameter check
      
     let body = _.pick(req.body,['name','department','message','priority','employee']);
-
     let ticket = new Ticket(body);
+    ticket.user = req.locals.user._id;
     ticket.save().then((ticket) => {
         res.send(ticket);
     }).catch((err) => {
